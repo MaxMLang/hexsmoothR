@@ -1,0 +1,82 @@
+# R package build artifacts
+*.tar.gz
+*.tgz
+*.zip
+*.Rcheck/
+*.RData
+*.Rhistory
+*.Rapp.history
+
+# Compiled C++ files
+src/*.o
+src/*.so
+src/*.dll
+src/*.dylib
+src/symbols.rds
+
+# Rcpp generated files
+src/RcppExports.cpp
+src/RcppExports.R
+
+# Documentation build artifacts
+inst/doc/
+vignettes/*.html
+vignettes/*.pdf
+
+# Test results
+tests/testthat/_snaps/
+tests/testthat/testthat.Rout
+
+# RStudio files
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux files
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Output directories
+quick_start_results/
+temp/
+output/
+
+# Generated files
+*.jpg
+*.jpeg
+
+# Keep the hex sticker for README
+!inst/images/hexsmoothR_sticker.png
+
+# Log files
+*.log
+*.out
+
+# Backup files
+*.bak
+*.backup
+
+# Package build artifacts
+/doc/
+/Meta/
+/hexsmoothR.Rcheck/
+/hexsmoothR_*.tar.gz
+
+# Version control
+/.git/

@@ -1,0 +1,28 @@
+# Hidden files and directories
+.git
+.gitignore
+.Rcheck
+hexsmoothR.Rcheck
+
+# Build artifacts
+.*\.tar\.gz$
+.*\.zip$
+
+# Documentation build artifacts
+docs/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+.*\.tmp$
+.*\.temp$ 
+^doc$
+^Meta$
+^cran-comments\.md$
+^\.github$

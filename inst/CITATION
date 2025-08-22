@@ -1,0 +1,32 @@
+citHeader("To cite the hexsmoothR package in publications use:")
+
+bibentry(
+  bibtype = "Manual",
+  title = "hexsmoothR: Hexagonal Grid Smoothing for Satellite Data",
+  author = c(
+    person("Max M.", "Lang", 
+           email = "max.lang@stx.ox.ac.uk",
+           role = c("aut", "cre"))
+  ),
+  year = 2024,
+  note = "R package version 0.1.0",
+  textVersion = paste("Max M. Lang (2024). hexsmoothR: Hexagonal Grid Smoothing for Satellite Data.",
+                     "R package version 0.1.0.")
+)
+
+citHeader("To cite the sample data in publications use:")
+
+bibentry(
+  bibtype = "Article",
+  title = "Landsat 8 Collection 2 Tier 1 Surface Reflectance",
+  author = c(
+    person("USGS", "Earth Resources Observation and Science Center")
+  ),
+  year = 2021,
+  journal = "Google Earth Engine Data Catalog",
+  url = "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2",
+  textVersion = paste("USGS Earth Resources Observation and Science Center (2021).",
+                     "Landsat 8 Collection 2 Tier 1 Surface Reflectance.",
+                     "Google Earth Engine Data Catalog.",
+                     "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2")
+) 

@@ -1,0 +1,32 @@
+Package: hexsmoothR
+Type: Package
+Title: Hexagonal Grid Smoothing for Satellite Data
+Version: 0.1.0
+Authors@R: 
+    person("Max M.", "Lang", email = "max.lang@stx.ox.ac.uk", role = c("aut", "cre"))
+Author: Max M. Lang [aut, cre]
+Maintainer: Max M. Lang <max.lang@stx.ox.ac.uk>
+Description: Creates hexagonal grids and applies spatial smoothing to satellite raster data. 
+    Provides tools for extracting environmental variables from TIF files and applying 
+    Gaussian-weighted spatial smoothing using C++ optimization. The package implements
+    a two-step workflow for spatial analysis: (1) extract raster data into hexagonal grids,
+    and (2) apply spatial smoothing with customizable neighborhood weights.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.0.0)
+LinkingTo: Rcpp
+Imports:
+    sf (>= 1.0.0),
+    terra (>= 1.6.0),
+    exactextractr (>= 0.8.0)
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    Matrix,
+    ggplot2,
+    gridExtra
+VignetteBuilder: knitr
+RoxygenNote: 7.3.2
+SystemRequirements: GDAL (>= 3.0), GEOS (>= 3.8), PROJ (>= 6.0)
+ 
