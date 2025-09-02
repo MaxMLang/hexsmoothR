@@ -53,8 +53,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>hexsmoothR: Complete Guide to Hexagonal Grid Smoothing</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>hexsmoothR: Complete Guide to Hexagonal Grid Smoothing</h1>
                         <h4 data-toc-skip class="author">Max M.
 Lang</h4>
             
@@ -81,28 +80,41 @@ patterns and environmental data.</p>
 <h2 id="hexagonal-grid-advantages">Hexagonal Grid Advantages<a class="anchor" aria-label="anchor" href="#hexagonal-grid-advantages"></a>
 </h2>
 <p>Hexagonal grids offer several technical advantages for spatial
-analysis: - Six neighbors per cell vs. four in square grids - Eliminates
-diagonal artifacts and edge effects - Improved packing efficiency and
-uniform cell shapes - Consistent neighbor distances for spatial
-averaging</p>
+analysis:</p>
+<ul>
+<li>Six neighbors per cell vs. four in square grids</li>
+<li>Eliminates diagonal artifacts and edge effects</li>
+<li>Improved packing efficiency and uniform cell shapes</li>
+<li>Consistent neighbor distances for spatial averaging</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="coastal-data-demonstration">Coastal Data Demonstration<a class="anchor" aria-label="anchor" href="#coastal-data-demonstration"></a>
 </h2>
 <p>Coastal vegetation data demonstrates hexagonal smoothing
-effectiveness: - Complex, irregular shorelines challenging traditional
-grid methods - Natural noise from water interference, cloud cover, and
-sensor issues - Underlying environmental patterns suitable for spatial
-enhancement - Clear visualization of smoothing algorithm performance</p>
+effectiveness:</p>
+<ul>
+<li>Complex, irregular shorelines challenging traditional grid
+methods</li>
+<li>Natural noise from water interference, cloud cover, and sensor
+issues</li>
+<li>Underlying environmental patterns suitable for spatial
+enhancement</li>
+<li>Clear visualization of smoothing algorithm performance</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="workflow-overview">Workflow Overview<a class="anchor" aria-label="anchor" href="#workflow-overview"></a>
 </h2>
-<p>The complete hexagonal smoothing workflow: 1. Data preparation and
-validation 2. Hexagonal grid creation with appropriate cell sizing 3.
-Raster data extraction into hexagonal cells 4. Spatial topology setup
-for neighbor relationships 5. Weighted smoothing algorithm application
-6. Result analysis and visualization</p>
+<p>The complete hexagonal smoothing workflow:</p>
+<ol style="list-style-type: decimal">
+<li>Data preparation and validation</li>
+<li>Hexagonal grid creation with appropriate cell sizing</li>
+<li>Raster data extraction into hexagonal cells</li>
+<li>Spatial topology setup for neighbor relationships</li>
+<li>Weighted smoothing algorithm application</li>
+<li>Result analysis and visualization</li>
+</ol>
 </div>
 <div class="section level2">
 <h2 id="data-source-and-characteristics">Data Source and Characteristics<a class="anchor" aria-label="anchor" href="#data-source-and-characteristics"></a>
@@ -119,11 +131,15 @@ averaging while preserving underlying environmental signals.</p>
 <h2 id="algorithm-implementation">Algorithm Implementation<a class="anchor" aria-label="anchor" href="#algorithm-implementation"></a>
 </h2>
 <p>The hexagonal smoothing algorithm implements weighted neighbor
-averaging: - First-order neighbors: Directly adjacent hexagons -
-Second-order neighbors: Neighbors of first-order neighbors - Weighted
-averaging: Center cell and neighbors contribute according to specified
-weights - Spatial preservation: Underlying patterns maintained during
-smoothing</p>
+averaging:</p>
+<ul>
+<li>First-order neighbors: Directly adjacent hexagons</li>
+<li>Second-order neighbors: Neighbors of first-order neighbors</li>
+<li>Weighted averaging: Center cell and neighbors contribute according
+to specified weights</li>
+<li>Spatial preservation: Underlying patterns maintained during
+smoothing</li>
+</ul>
 <p>The following sections provide implementation examples and technical
 details for each workflow step.</p>
 </div>
@@ -133,11 +149,13 @@ details for each workflow step.</p>
 <div class="section level3">
 <h3 id="coordinate-reference-systems-crs">Coordinate Reference Systems (CRS)<a class="anchor" aria-label="anchor" href="#coordinate-reference-systems-crs"></a>
 </h3>
-<p>CRS selection affects hexagonal grid accuracy and cell sizing: -
-Projected CRS (UTM, State Plane): cell_size in meters - Geographic CRS
-(WGS84, NAD83): cell_size in degrees - Package handles CRS
-transformations automatically - Production use: UTM coordinates with
-cell sizes in meters</p>
+<p>CRS selection affects hexagonal grid accuracy and cell sizing:</p>
+<ul>
+<li>Projected CRS (UTM, State Plane): cell_size in meters</li>
+<li>Geographic CRS (WGS84, NAD83): cell_size in degrees</li>
+<li>Package handles CRS transformations automatically</li>
+<li>Production use: UTM coordinates with cell sizes in meters</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="hexagon-geometry-and-measurements">Hexagon Geometry and Measurements<a class="anchor" aria-label="anchor" href="#hexagon-geometry-and-measurements"></a>
@@ -296,9 +314,11 @@ requirements.</p>
 <div class="section level3">
 <h3 id="cell-size-and-crs-dependencies">Cell Size and CRS Dependencies<a class="anchor" aria-label="anchor" href="#cell-size-and-crs-dependencies"></a>
 </h3>
-<p>Cell size units depend on coordinate reference system: - Projected
-CRS (UTM, State Plane): cell_size in meters - Geographic CRS (WGS84,
-NAD83): cell_size in degrees</p>
+<p>Cell size units depend on coordinate reference system:</p>
+<ul>
+<li>Projected CRS (UTM, State Plane): cell_size in meters</li>
+<li>Geographic CRS (WGS84, NAD83): cell_size in degrees</li>
+</ul>
 <p>Use projected CRS (UTM) for accurate measurements.</p>
 </div>
 <div class="section level3">
