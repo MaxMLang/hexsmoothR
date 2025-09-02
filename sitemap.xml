@@ -1,0 +1,25 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://maxmlang.github.io/hexsmoothR/404.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/LICENSE-text.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/articles/hexsmoothR-complete-guide.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/articles/index.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/authors.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/index.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/compute_neighbors_n_orders.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/compute_topology.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/compute_weights_n_orders.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/create_grid.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/create_single_grid.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/dot-onAttach.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/dot-onLoad.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/extract_raster_data.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/find_hex_cell_size_for_target_cells.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/get_utm_crs.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/hex_flat_to_edge.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/index.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/process_district_all_vars_n_orders_wrapper.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/process_district_all_vars_wrapper.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/smooth_variables.html</loc></url>
+<url><loc>https://maxmlang.github.io/hexsmoothR/reference/smooth_variables_r_fallback.html</loc></url>
+</urlset>
+
