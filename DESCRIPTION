@@ -11,7 +11,7 @@ Description: Creates hexagonal grids and applies spatial smoothing to satellite 
     Gaussian-weighted spatial smoothing using C++ optimization. The package implements
     a two-step workflow for spatial analysis: (1) extract raster data into hexagonal grids,
     and (2) apply spatial smoothing with customizable neighborhood weights.
-License: MIT + file LICENSE
+License: file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.0.0)
 LinkingTo: Rcpp
@@ -29,4 +29,4 @@ Suggests:
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 SystemRequirements: GDAL (>= 3.0), GEOS (>= 3.8), PROJ (>= 6.0)
- 
+URL: https://maxmlang.github.io/hexsmoothR/

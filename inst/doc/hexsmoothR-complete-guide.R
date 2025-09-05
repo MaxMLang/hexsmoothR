@@ -1,15 +1,4 @@
----
-title: "hexsmoothR: Complete Guide to Hexagonal Grid Smoothing"
-author: "Max M. Lang"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{hexsmoothR: Complete Guide to Hexagonal Grid Smoothing}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r setup, include = FALSE}
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -18,88 +7,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
-```
 
-## Introduction
-
-hexsmoothR implements hexagonal grid-based spatial smoothing algorithms optimized for environmental data analysis. This vignette demonstrates the complete workflow from data preparation through hexagonal grid creation, data extraction, and spatial smoothing. The hexagonal approach provides superior spatial averaging compared to traditional square-grid methods, particularly for complex spatial patterns and environmental data.
-
-## Hexagonal Grid Advantages
-
-Hexagonal grids offer several technical advantages for spatial analysis:
-
-- Six neighbors per cell vs. four in square grids
-- Eliminates diagonal artifacts and edge effects
-- Improved packing efficiency and uniform cell shapes
-- Consistent neighbor distances for spatial averaging
-
-## Coastal Data Demonstration
-
-Coastal vegetation data demonstrates hexagonal smoothing effectiveness:
-
-- Complex, irregular shorelines challenging traditional grid methods
-- Natural noise from water interference, cloud cover, and sensor issues
-- Underlying environmental patterns suitable for spatial enhancement
-- Clear visualization of smoothing algorithm performance
-
-## Workflow Overview
-
-The complete hexagonal smoothing workflow:
-
-1. Data preparation and validation
-2. Hexagonal grid creation with appropriate cell sizing
-3. Raster data extraction into hexagonal cells
-4. Spatial topology setup for neighbor relationships
-5. Weighted smoothing algorithm application
-6. Result analysis and visualization
-
-## Data Source and Characteristics
-
-Sentinel-2 L2A NDVI data from Copernicus Hub Ecosystem provides authentic coastal vegetation patterns. NDVI values range from -0.8 (water/bare soil) to 1.6+ (dense vegetation).
-
-The demonstration uses original Sentinel-2 data without artificial noise, demonstrating hexagonal smoothing on authentic environmental patterns. The algorithm enhances spatial patterns through neighbor averaging while preserving underlying environmental signals.
-
-## Algorithm Implementation
-
-The hexagonal smoothing algorithm implements weighted neighbor averaging:
-
-- First-order neighbors: Directly adjacent hexagons
-- Second-order neighbors: Neighbors of first-order neighbors
-- Weighted averaging: Center cell and neighbors contribute according to specified weights
-- Spatial preservation: Underlying patterns maintained during smoothing
-
-The following sections provide implementation examples and technical details for each workflow step.
-
-## Key Concepts and Implementation Details
-
-### Coordinate Reference Systems (CRS)
-
-CRS selection affects hexagonal grid accuracy and cell sizing:
-
-- Projected CRS (UTM, State Plane): cell_size in meters
-- Geographic CRS (WGS84, NAD83): cell_size in degrees
-- Package handles CRS transformations automatically
-- Production use: UTM coordinates with cell sizes in meters
-
-### Hexagon Geometry and Measurements
-
-- `cell_size` parameter: flat-to-flat distance (opposite edges)
-- Pointy-topped hexagons: default configuration for neighbor calculations
-- Helper functions: convert between measurement systems
-- Regular hexagons: consistent area ratios and neighbor distances
-
-### Spatial Topology and Neighbor Relationships
-
-- First-order neighbors: directly adjacent hexagons sharing edges
-- Second-order neighbors: neighbors of first-order neighbors
-- Weight parameters: control center vs. neighbor cell influence
-- Implementation: weights applied to individual neighbors, not neighbor means
-
-Spatial topology determines smoothing algorithm behavior. Each hexagon receives weighted average of own value plus neighbor values, with weights controlling local vs. neighborhood information balance.
-
-## Step 1: Library Loading and Data Preparation
-
-```{r load-libraries, eval = TRUE}
+## ----load-libraries, eval = TRUE----------------------------------------------
 library(hexsmoothR)
 library(sf)
 library(terra)
@@ -202,26 +111,8 @@ plot(observed_coastal_vegetation$sentinel2_ndvi_3,
 cat("Individual plots created successfully!\n")
 
 demo_raster <- observed_coastal_vegetation
-```
 
-## Step 2: Hexagonal Grid Creation
-
-Grid creation requires appropriate cell sizing and coordinate system selection. Cell size determines spatial resolution and computational requirements.
-
-### Cell Size and CRS Dependencies
-
-Cell size units depend on coordinate reference system:
-
-- Projected CRS (UTM, State Plane): cell_size in meters
-- Geographic CRS (WGS84, NAD83): cell_size in degrees
-
-Use projected CRS (UTM) for accurate measurements.
-
-### Cell Size Calculation
-
-Calculate cell size to match target hexagon count and raster area.
-
-```{r create-grid, eval = TRUE}
+## ----create-grid, eval = TRUE-------------------------------------------------
 # Create study area polygon from raster extent
 study_area_wgs <- st_sf(geometry = st_sfc(
   st_polygon(list(matrix(
@@ -271,11 +162,8 @@ plot(st_geometry(hex_grid_wgs84), add = TRUE, border = "white", lwd = 0.1)
 
 plot(st_geometry(hex_grid_wgs84), main = paste("Hexagonal Grid -", nrow(hex_grid), "cells"), 
      border = "blue", lwd = 0.05)
-```
 
-### Helper Function for Optimal Cell Size
-
-```{r optimal-cell-size, eval = TRUE}
+## ----optimal-cell-size, eval = TRUE-------------------------------------------
 # Package suggests optimal cell size for target hexagon count
 target_cells <- 5000
 optimal_cell_size <- find_hex_cell_size_for_target_cells(
@@ -286,26 +174,18 @@ optimal_cell_size <- find_hex_cell_size_for_target_cells(
 )
 
 cat("Optimal cell size:", round(optimal_cell_size, 0), "m\n")
-```
 
-### Import Existing Grid
+## ----import-grid, eval = FALSE------------------------------------------------
+# # Load existing hexagonal grid and ensure correct CRS
+# existing_grid <- st_read("path/to/your/hex_grid.shp")
+# 
+# if (st_crs(existing_grid)$input != st_crs(study_area_utm)$input) {
+#   existing_grid <- st_transform(existing_grid, crs = st_crs(study_area_utm))
+# }
+# 
+# hex_grid <- existing_grid
 
-```{r import-grid, eval = FALSE}
-# Load existing hexagonal grid and ensure correct CRS
-existing_grid <- st_read("path/to/your/hex_grid.shp")
-
-if (st_crs(existing_grid)$input != st_crs(study_area_utm)$input) {
-  existing_grid <- st_transform(existing_grid, crs = st_crs(study_area_utm))
-}
-
-hex_grid <- existing_grid
-```
-
-## Step 3: Extract Raster Data into Hexagons
-
-Extract raster values into hexagon cells using existing grid.
-
-```{r extract-raster, eval = TRUE}
+## ----extract-raster, eval = TRUE----------------------------------------------
 # Extract raster values into hexagon cells
 # Function handles CRS transformations and pixel aggregation
 
@@ -367,85 +247,64 @@ cat("- **PERFECT ALIGNMENT**: extract_raster_data preserves grid orientation lik
 # - data: dataframe with extracted values
 # - variables: names of the extracted variables
 # - n_cells: number of grid cells
-```
 
-### Benefits of Using terra::rast Objects
+## ----multiple-rasters, eval = FALSE-------------------------------------------
+# # Load multiple rasters for inspection
+# ndvi_raster <- rast("path/to/ndvi.tif")
+# elevation_raster <- rast("path/to/elevation.tif")
+# precipitation_raster <- rast("path/to/precipitation.tif")
+# 
+# # Inspect each raster
+# cat("NDVI raster:\n")
+# cat("  CRS:", crs(ndvi_raster), "\n")
+# cat("  Dimensions:", nrow(ndvi_raster), "x", ncol(ndvi_raster), "\n")
+# 
+# cat("Elevation raster:\n")
+# cat("  CRS:", crs(elevation_raster), "\n")
+# cat("  Dimensions:", nrow(elevation_raster), "x", ncol(elevation_raster), "\n")
+# 
+# # Ensure all rasters have compatible CRS and extent
+# if (crs(ndvi_raster) != crs(elevation_raster)) {
+#   cat("Warning: Rasters have different CRS\n")
+#   # You could reproject here if needed
+# }
+# 
+# # Extract all variables at once
+# extracted_multi <- extract_raster_data(
+#   raster_files = list(
+#     ndvi = ndvi_raster,
+#     elevation = elevation_raster,
+#     precipitation = precipitation_raster
+#   ),
+#   study_area = study_area_utm,
+#   cell_size = 20000
+# )
 
-Using `terra::rast` objects instead of file paths provides several advantages:
+## ----working-examples, eval = FALSE-------------------------------------------
+# # Example 1: WGS84 coordinates (geographic)
+# # Use degrees for cell_size
+# extracted_wgs84 <- extract_raster_data(
+#   raster_files = c(sample = sample_file),
+#   study_area = study_area_wgs,  # WGS84 coordinates
+#   cell_size = 0.1               # 0.1 degrees (~11km)
+# )
+# 
+# # Example 2: UTM coordinates (projected)
+# # Use meters for cell_size
+# extracted_utm <- extract_raster_data(
+#   raster_files = c(sample = sample_file),
+#   study_area = study_area_utm,  # UTM coordinates
+#   cell_size = 20000             # 20000 meters (20km)
+# )
+# 
+# # Example 3: No study area (uses raster CRS)
+# # Function automatically determines appropriate units
+# extracted_auto <- extract_raster_data(
+#   raster_files = c(sample = sample_file),
+#   cell_size = 0.1               # 0.1 degrees (since raster is WGS84)
+# )
 
-1. **CRS Inspection**: Check coordinate systems before extraction
-2. **Data Validation**: Verify dimensions, extent, and data quality
-3. **Pre-processing**: Apply filters, transformations, or cropping before extraction
-4. **Memory Efficiency**: Work with in-memory rasters for repeated operations
-5. **Error Prevention**: Catch CRS or data issues early in the workflow
-
-### Example: Working with Multiple Rasters
-
-```{r multiple-rasters, eval = FALSE}
-# Load multiple rasters for inspection
-ndvi_raster <- rast("path/to/ndvi.tif")
-elevation_raster <- rast("path/to/elevation.tif")
-precipitation_raster <- rast("path/to/precipitation.tif")
-
-# Inspect each raster
-cat("NDVI raster:\n")
-cat("  CRS:", crs(ndvi_raster), "\n")
-cat("  Dimensions:", nrow(ndvi_raster), "x", ncol(ndvi_raster), "\n")
-
-cat("Elevation raster:\n")
-cat("  CRS:", crs(elevation_raster), "\n")
-cat("  Dimensions:", nrow(elevation_raster), "x", ncol(elevation_raster), "\n")
-
-# Ensure all rasters have compatible CRS and extent
-if (crs(ndvi_raster) != crs(elevation_raster)) {
-  cat("Warning: Rasters have different CRS\n")
-  # You could reproject here if needed
-}
-
-# Extract all variables at once
-extracted_multi <- extract_raster_data(
-  raster_files = list(
-    ndvi = ndvi_raster,
-    elevation = elevation_raster,
-    precipitation = precipitation_raster
-  ),
-  study_area = study_area_utm,
-  cell_size = 20000
-)
-```
-
-### Working Examples: WGS84 vs UTM
-
-```{r working-examples, eval = FALSE}
-# Example 1: WGS84 coordinates (geographic)
-# Use degrees for cell_size
-extracted_wgs84 <- extract_raster_data(
-  raster_files = c(sample = sample_file),
-  study_area = study_area_wgs,  # WGS84 coordinates
-  cell_size = 0.1               # 0.1 degrees (~11km)
-)
-
-# Example 2: UTM coordinates (projected)
-# Use meters for cell_size
-extracted_utm <- extract_raster_data(
-  raster_files = c(sample = sample_file),
-  study_area = study_area_utm,  # UTM coordinates
-  cell_size = 20000             # 20000 meters (20km)
-)
-
-# Example 3: No study area (uses raster CRS)
-# Function automatically determines appropriate units
-extracted_auto <- extract_raster_data(
-  raster_files = c(sample = sample_file),
-  cell_size = 0.1               # 0.1 degrees (since raster is WGS84)
-)
-```
-
-## Step 4: Configure Smoothing Topology
-
-### Standard 2-Order Topology (Backward Compatible)
-
-```{r configure-topology, eval = TRUE}
+## ----configure-topology, eval = TRUE------------------------------------------
 # Compute spatial topology for smoothing (default: 2 orders)
 topology <- compute_topology(hex_grid)
 
@@ -471,11 +330,8 @@ cat("Neighborhood visualization would show:\n")
 cat("- Center cell (red)\n")
 cat("- 1st order neighbors (orange)\n") 
 cat("- 2nd order neighbors (yellow)\n")
-```
 
-### Advanced: N-Order Topology for Enhanced Smoothing
-
-```{r configure-n-order-topology, eval = TRUE}
+## ----configure-n-order-topology, eval = TRUE----------------------------------
 # Compute topology with 3 neighbor orders for more extensive smoothing
 topology_3 <- compute_topology(hex_grid, neighbor_orders = 3)
 
@@ -512,24 +368,8 @@ topology_custom <- compute_topology(
 cat("Custom 4-order topology with manual weights\n")
 cat("Total weight sum:", topology_custom$weights$center_weight + 
     sum(topology_custom$weights$neighbor_weights), "\n")
-```
 
-### Understanding Neighbor Orders
-
-The neighbor order system determines how far the smoothing extends:
-
-- **1st order**: Directly touching cells (6 for hexagons, 4 for squares)
-- **2nd order**: Neighbors of neighbors (typically 12 for hexagons)
-- **3rd order**: Neighbors of neighbors of neighbors (typically 18 for hexagons)
-- **Nth order**: N levels of neighbor relationships
-
-Higher orders provide more extensive smoothing but increase computation time and memory usage. The default 2-order system balances performance and smoothing effectiveness for most applications.
-
-## Step 5: Apply Spatial Smoothing
-
-### Standard 2-Order Smoothing (Backward Compatible)
-
-```{r apply-smoothing, eval = TRUE}
+## ----apply-smoothing, eval = TRUE---------------------------------------------
 # Apply spatial smoothing using C++-optimized function (2 orders)
 smoothing_results <- smooth_variables(
   variable_values = list(coastal_vegetation = extracted_values),
@@ -563,11 +403,8 @@ cat("- neighbors_1st: Average of first-order neighbors only\n")
 cat("- neighbors_2nd: Average of second-order neighbors only\n")
 cat("- weighted_combined: Weighted average (center + all neighbors) ★\n")
 cat("\n★ weighted_combined is typically the best result for noise reduction\n")
-```
 
-### Advanced: N-Order Smoothing for Enhanced Results
-
-```{r apply-n-order-smoothing, eval = TRUE}
+## ----apply-n-order-smoothing, eval = TRUE-------------------------------------
 # Apply 3-order smoothing using the new N-order system
 smoothing_results_3 <- smooth_variables(
   variable_values = list(coastal_vegetation = extracted_values),
@@ -605,18 +442,8 @@ noise_reduction_3 <- (sd(extracted_values, na.rm = TRUE) -
 
 cat("3-Order noise reduction:", round(noise_reduction_3, 1), "%\n")
 cat("Additional reduction over 2-order:", round(noise_reduction_3 - noise_reduction, 1), "%\n")
-```
 
-### When to Use Higher Orders
-
-- **2 orders (default)**: Best for most applications, balanced performance and smoothing
-- **3-4 orders**: Use when you need more extensive smoothing or have noisy data
-- **5+ orders**: Use sparingly for very large-scale patterns, but be aware of increased computation time
-- **Custom weights**: Use when you need specific spatial decay patterns for your analysis
-
-## Step 6: Combine Results and Analyze
-
-```{r combine-results, eval = TRUE}
+## ----combine-results, eval = TRUE---------------------------------------------
 # Combine the hexagonal grid with smoothing results
 hex_grid_with_results <- hex_grid
 hex_grid_with_results$coastal_vegetation_raw <- smoothing_results$coastal_vegetation$raw
@@ -642,11 +469,8 @@ cat("- weighted_combined: Weighted average (center + all neighbors, weights appl
 cat("Original values - Count:", length(extracted_values), "Mean:", round(mean(extracted_values, na.rm = TRUE), 4), "SD:", round(sd(extracted_values, na.rm = TRUE), 4), "\n")
 cat("Smoothed values - Count:", length(smoothing_results$coastal_vegetation$weighted_combined), "Mean:", round(mean(smoothing_results$coastal_vegetation$weighted_combined, na.rm = TRUE), 4), "SD:", round(sd(smoothing_results$coastal_vegetation$weighted_combined, na.rm = TRUE), 4), "\n")
 cat("Variance reduction:", round(noise_reduction, 1), "%\n")
-```
 
-## Step 7: Visualize the Improvement
-
-```{r visualize-results, eval = TRUE}
+## ----visualize-results, eval = TRUE-------------------------------------------
 # Create spectacular before/after visualization showing the power of spatial smoothing
 cat("=== CREATING BEFORE/AFTER VISUALIZATION ===\n")
 
@@ -683,46 +507,40 @@ cat("- Top left: Raw extracted data\n")
 cat("- Top right: 1st order neighbor smoothing\n")
 cat("- Bottom left: 2nd order neighbor smoothing\n")
 cat("- Bottom right: Final weighted combined result\n")
-```
 
-## Step 8: Working with Multiple Variables
+## ----multiple-variables, eval = FALSE-----------------------------------------
+# # You can work with multiple raster files and variables
+# raster_files <- c(
+#   ndvi = "path/to/your/ndvi.tif",
+#   elevation = "path/to/your/elevation.tif",
+#   precipitation = "path/to/your/precipitation.tif"
+# )
+# 
+# # Extract multiple variables
+# extracted_multi <- extract_raster_data(
+#   raster_files = raster_files,
+#   study_area = study_area_utm,
+#   cell_size = cell_size
+# )
+# 
+# # Apply smoothing to all variables
+# variable_values <- list(
+#   ndvi = extracted_multi$data$ndvi,
+#   elevation = extracted_multi$data$elevation,
+#   precipitation = extracted_multi$data$precipitation
+# )
+# 
+# smoothing_multi <- smooth_variables(
+#   variable_values = variable_values,
+#   neighbors = topology$neighbors,
+#   weights = topology$weights,
+#   var_names = c("ndvi", "elevation", "precipitation")
+# )
+# 
+# # Each variable gets the same smoothing treatment
+# cat("Variables processed:", paste(names(smoothing_multi), collapse = ", "), "\n")
 
-```{r multiple-variables, eval = FALSE}
-# You can work with multiple raster files and variables
-raster_files <- c(
-  ndvi = "path/to/your/ndvi.tif",
-  elevation = "path/to/your/elevation.tif",
-  precipitation = "path/to/your/precipitation.tif"
-)
-
-# Extract multiple variables
-extracted_multi <- extract_raster_data(
-  raster_files = raster_files,
-  study_area = study_area_utm,
-  cell_size = cell_size
-)
-
-# Apply smoothing to all variables
-variable_values <- list(
-  ndvi = extracted_multi$data$ndvi,
-  elevation = extracted_multi$data$elevation,
-  precipitation = extracted_multi$data$precipitation
-)
-
-smoothing_multi <- smooth_variables(
-  variable_values = variable_values,
-  neighbors = topology$neighbors,
-  weights = topology$weights,
-  var_names = c("ndvi", "elevation", "precipitation")
-)
-
-# Each variable gets the same smoothing treatment
-cat("Variables processed:", paste(names(smoothing_multi), collapse = ", "), "\n")
-```
-
-## Step 9: Hexagon Measurement Utilities
-
-```{r hexagon-utilities, eval = TRUE}
+## ----hexagon-utilities, eval = TRUE-------------------------------------------
 # The package provides helper functions for hexagon measurements
 # IMPORTANT: cell_size_flat is in METERS (UTM coordinates)
 cell_size_flat <- 20000  # 20km flat-to-flat distance in meters
@@ -742,57 +560,4 @@ flat_distance_from_circumradius <- hex_circumradius_to_flat(circumradius)
 cat("Verification:\n")
 cat("Flat distance from edge:", round(flat_distance_from_edge, 2), "m\n")
 cat("Flat distance from circumradius:", round(flat_distance_from_circumradius, 2), "m\n")
-```
 
-## Summary
-
-This vignette demonstrates the complete hexsmoothR workflow:
-
-1. **Grid Creation**: Create hexagonal grids in projected coordinates (UTM recommended)
-2. **Raster Extraction**: Extract values from raster files into hexagon cells
-3. **Topology Configuration**: Set up spatial relationships and smoothing weights
-4. **Spatial Smoothing**: Apply C++-optimized smoothing algorithms
-5. **Result Analysis**: Visualize and analyze your smoothed hexagon layers
-
-### Key Functions
-
-- **`create_grid()`** - Generate hexagonal grids with optimal cell sizes
-- **`extract_raster_data()`** - Extract raster values with automatic CRS handling
-- **`compute_topology()`** - Configure spatial relationships and weights
-- **`smooth_variables()`** - Apply fast spatial smoothing
-
-### Helper Functions
-
-- **`find_hex_cell_size_for_target_cells()`** - Optimize grid cell size
-- **`get_utm_crs()`** - Automatically determine appropriate UTM projection
-- **`hex_flat_to_edge()`, `hex_edge_to_flat()`** - Convert between hexagon measurements
-
-### Best Practices
-
-1. **Always use projected CRS** (UTM) for grid creation
-2. **Cell sizes are in meters** when using projected coordinates (UTM, State Plane, etc.)
-3. **Cell sizes are in degrees** when using geographic coordinates (WGS84, NAD83, etc.)
-5. **Let functions handle CRS transformations** automatically
-6. **Use helper functions** to optimize your workflow
-
-### Understanding Units and CRS
-
-**Coordinate Reference Systems:**
-
-- **UTM coordinates**: Use meters for cell sizes (e.g., 20000 for 20km hexagons)
-- **WGS84 coordinates**: Use degrees for cell sizes (e.g., 0.1 for ~11km hexagons)
-- **Functions automatically convert** between CRS when needed
-
-**Cell Size Units:**
-
-- **`cell_size` parameter**: Always in the units of your study area's CRS
-- **UTM zones**: cell_size in meters (recommended for real-world analysis)
-- **Geographic coordinates**: cell_size in degrees (use with caution for large areas)
-
-**Smoothing Weights:**
-
-- **Weights apply to each individual neighbor**, not to neighbor means
-- **Center weight**: Influence of the cell itself
-- **First-order weight**: Influence of each immediate neighbor
-- **Second-order weight**: Influence of each second-order neighbor
-- **Total influence** depends on the number of neighbors each cell has

@@ -1,7 +1,7 @@
 # hexsmoothR: Hexagonal Grid Smoothing for Satellite Data
 
 <div align="center">
-  <img src="inst/images/hexsmoothR_sticker.png" alt="hexsmoothR hex sticker" width="200">
+  <img src="man/figures/hexsmoothR_sticker.png" alt="hexsmoothR hex sticker" width="200">
 </div>
 
 <!-- badges: start -->
@@ -65,21 +65,20 @@ library(sf)
 library(terra)
 
 # Create hexagonal grid
-hex_grid <- create_grid(study_area, cell_size = 0.01, type = "hexagonal")
+hex_grid <- create_grid(study_area, cell_size = 20000, type = "hexagonal")
 
 # Compute spatial topology
 topology <- compute_topology(hex_grid)
 
 # Extract raster data
 raster_files <- c(ndvi = "path/to/ndvi.tif", elevation = "path/to/elevation.tif")
-extracted_data <- extract_raster_data(raster_files, study_area, cell_size = 10000)
+extracted_data <- extract_raster_data(raster_files, study_area, cell_size = 20000)
 
 # Apply spatial smoothing
 smoothed_results <- smooth_variables(
-  variable_values = list(ndvi = extracted_data$ndvi, elevation = extracted_data$elevation),
-  first_neighbors = topology$first_order_neighbors,
-  second_neighbors = topology$second_order_neighbors,
-  weights = c(1.0, 0.5, 0.25),
+  variable_values = list(ndvi = extracted_data$data$ndvi, elevation = extracted_data$data$elevation),
+  neighbors = topology$neighbors,
+  weights = topology$weights,
   var_names = c("ndvi", "elevation")
 )
 ```
@@ -120,36 +119,38 @@ grid <- st_sf(
 
 ## Output
 
-The result is an `sf` object with:
-- **Raw values**: `{variable}_raw` (extracted raster values)
-- **Neighbor averages**: `{variable}_neighbors_1st` (1st order neighbors), `{variable}_neighbors_2nd` (2nd order neighbors)
-- **Smoothed values**: `{variable}_smoothed_1st` (weighted 1st order), `{variable}_smoothed_all` (weighted all neighbors)
-- **Grid info**: `grid_id`, `grid_index`, `geometry`
-
-Ready for plotting with `ggplot2` or other spatial tools.
+The smoothing results contain:
+- `raw` - Weighted average of center cell and all neighbors
+- `neighbors_1st`, `neighbors_2nd`, etc. - Mean of neighbors at each order
+- `weighted_combined` - Final weighted average (recommended for analysis)
 
 ## Advanced Usage
 
 ### Multiple Variables
 ```r
 raster_files <- c(ndvi = "path/to/ndvi.tif", elevation = "path/to/elevation.tif")
-extracted_data <- extract_raster_data(raster_files, study_area, cell_size = 10000)
+extracted_data <- extract_raster_data(raster_files, study_area, cell_size = 20000)
 
 smoothed_results <- smooth_variables(
-  variable_values = list(ndvi = extracted_data$ndvi, elevation = extracted_data$elevation),
-  first_neighbors = topology$first_order_neighbors,
-  second_neighbors = topology$second_order_neighbors,
-  weights = c(1.0, 0.5, 0.25),
+  variable_values = list(ndvi = extracted_data$data$ndvi, elevation = extracted_data$data$elevation),
+  neighbors = topology$neighbors,
+  weights = topology$weights,
   var_names = c("ndvi", "elevation")
 )
 ```
 
 ### Custom Weights
 ```r
-topology <- compute_topology(hex_grid, sigma = 1000, center_weight = 1.0, first_order_weight = 0.5, second_order_weight = 0.25)
+topology <- compute_topology(hex_grid, neighbor_orders = 3, center_weight = 1.0)
 ```
 
 ## Grid Requirements
+
+hexsmoothR works with any hexagonal grid that follows the required structure. You can use grids created with:
+
+- **Uber H3 grids** from Python, R, or any programming language
+- **Custom hexagonal grids** created with any GIS software
+- **Grids from other packages** (as long as they follow the structure below)
 
 **Required grid structure:**
 ```r
@@ -160,10 +161,22 @@ grid <- st_sf(
 )
 ```
 
-**Compatible with:**
-- Uber H3 grids from Python/R
-- Custom hexagonal grids
-- Square grids (for comparison)
+**Example with H3 grids from Python:**
+```python
+import h3
+import geopandas as gpd
+from shapely.geometry import Polygon
+
+# Create H3 hexagons in Python
+h3_hexes = h3.polygon_to_cells(polygon, resolution=8)
+geometries = [Polygon(h3.cell_to_boundary(hex_id)) for hex_id in h3_hexes]
+
+# Convert to GeoDataFrame with required structure
+gdf = gpd.GeoDataFrame({
+    'grid_id': h3_hexes,
+    'grid_index': range(len(h3_hexes))
+}, geometry=geometries, crs='EPSG:4326')
+```
 
 **Tip:** Use projected CRS (UTM) for real-world analysis with cell sizes in meters.
 
@@ -175,12 +188,7 @@ grid <- st_sf(
 
 ## Implementation Details
 
-hexsmoothR uses Rcpp for high-performance spatial smoothing algorithms with automatic fallback to R implementation if needed. The package provides:
-
-- **C++ optimization**: Multi-variable processing in single pass
-- **Memory efficiency**: Contiguous array operations for large datasets
-- **Automatic fallback**: R implementation when C++ is unavailable
-- **Progress reporting**: For long-running operations
+hexsmoothR uses Rcpp for high-performance spatial smoothing algorithms with automatic fallback to R implementation if needed.
 
 ## Dependencies
 
@@ -197,14 +205,6 @@ hexsmoothR uses Rcpp for high-performance spatial smoothing algorithms with auto
 1. **Rtools**: Download and install from [CRAN Rtools page](https://cran.r-project.org/bin/windows/Rtools/)
 2. **Restart R/RStudio** after installing Rtools
 3. **Verify installation**: Run `Sys.which("make")` - it should return a path, not `""`
-
-**Alternative for Windows users who can't compile:**
-- Use the package on systems with build tools available
-- Consider using RStudio Cloud or similar cloud-based R environments
-- Contact the maintainer for pre-compiled binaries if available
-
-**Windows Diagnostic Tool:**
-Run `source("windows_check.R")` to diagnose your build environment setup.
 
 ## Contributing
 

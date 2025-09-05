@@ -19,7 +19,6 @@ src/RcppExports.cpp
 src/RcppExports.R
 
 # Documentation build artifacts
-inst/doc/
 vignettes/*.html
 vignettes/*.pdf
 
@@ -80,3 +79,4 @@ output/
 
 # Version control
 /.git/
+docs
