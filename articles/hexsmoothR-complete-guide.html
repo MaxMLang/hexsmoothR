@@ -62,7 +62,7 @@
                         <h4 data-toc-skip class="author">Max M.
 Lang</h4>
             
-            <h4 data-toc-skip class="date">2025-09-05</h4>
+            <h4 data-toc-skip class="date">2026-01-09</h4>
       
 
       <div class="d-none name"><code>hexsmoothR-complete-guide.Rmd</code></div>
@@ -288,7 +288,7 @@ with weights controlling local vs. neighborhood information balance.</p>
 <span>     main <span class="op">=</span> <span class="va">plot_title_1</span>,</span>
 <span>     col <span class="op">=</span> <span class="va">plot_colors</span>,</span>
 <span>     axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="hexsmoothR-complete-guide_files/figure-html/load-libraries-1.png" width="960"></p>
+<p><img src="hexsmoothR-complete-guide_files/figure-html/load-libraries-1.png" class="r-plt" alt="" width="960"></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Plot 2: Observed coastal vegetation data</span></span>
@@ -302,7 +302,7 @@ with weights controlling local vs. neighborhood information balance.</p>
 <span>     main <span class="op">=</span> <span class="va">plot_title_2</span>,</span>
 <span>     col <span class="op">=</span> <span class="va">plot_colors</span>,</span>
 <span>     axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="hexsmoothR-complete-guide_files/figure-html/load-libraries-2.png" width="960"></p>
+<p><img src="hexsmoothR-complete-guide_files/figure-html/load-libraries-2.png" class="r-plt" alt="" width="960"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Individual plots created successfully!\n"</span><span class="op">)</span></span>
@@ -393,7 +393,7 @@ area.</p>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">hex_grid_wgs84</span><span class="op">)</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Hexagonal Grid -"</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">hex_grid</span><span class="op">)</span>, <span class="st">"cells"</span><span class="op">)</span>, </span>
 <span>     border <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
-<p><img src="hexsmoothR-complete-guide_files/figure-html/create-grid-1.png" width="960"></p>
+<p><img src="hexsmoothR-complete-guide_files/figure-html/create-grid-1.png" class="r-plt" alt="" width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="helper-function-for-optimal-cell-size">Helper Function for Optimal Cell Size<a class="anchor" aria-label="anchor" href="#helper-function-for-optimal-cell-size"></a>
@@ -628,7 +628,7 @@ area.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">demo_raster</span><span class="op">$</span><span class="va">sentinel2_ndvi_1</span>, </span>
 <span>     main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Original Raster ("</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">demo_raster</span><span class="op">)</span>, <span class="st">"pixels)"</span><span class="op">)</span>,</span>
 <span>     col <span class="op">=</span> <span class="va">plot_colors</span><span class="op">)</span></span></code></pre></div>
-<p><img src="hexsmoothR-complete-guide_files/figure-html/extract-raster-1.png" width="960"></p>
+<p><img src="hexsmoothR-complete-guide_files/figure-html/extract-raster-1.png" class="r-plt" alt="" width="960"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Plot extracted hexagon values</span></span>
@@ -640,7 +640,7 @@ area.</p>
 <span>     col <span class="op">=</span> <span class="va">plot_colors</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">hex_for_plot</span><span class="op">$</span><span class="va">value</span>, <span class="fl">100</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>     main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Extracted Hexagon Coastal Vegetation Values (NDVI-like)\n("</span>, <span class="va">extracted_data</span><span class="op">$</span><span class="va">n_cells</span>, <span class="st">"hexagons)"</span><span class="op">)</span>,</span>
 <span>     border <span class="op">=</span> <span class="st">"white"</span>, lwd <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
-<p><img src="hexsmoothR-complete-guide_files/figure-html/extract-raster-2.png" width="960"></p>
+<p><img src="hexsmoothR-complete-guide_files/figure-html/extract-raster-2.png" class="r-plt" alt="" width="960"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\nExtraction process:\n"</span><span class="op">)</span></span>
@@ -894,12 +894,12 @@ performance and smoothing effectiveness for most applications.</p>
 <span>  var_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coastal_vegetation"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using C++ implementation for N-order smoothing</span></span>
-<span><span class="co">#&gt; C++ implementation failed, falling back to R implementation:  "_hexsmoothR_process_district_all_vars_n_orders" not available for .Call() for package "hexsmoothR"</span></span>
+<span><span class="co">#&gt; Processing hexagon 5000 of 11223Processing hexagon 10000 of 11223</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Spatial smoothing complete\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Spatial smoothing complete</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Results:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">smoothing_results</span><span class="op">$</span><span class="va">coastal_vegetation</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Results: raw, weighted_combined, neighbors_1st, neighbors_2nd</span></span>
+<span><span class="co">#&gt; Results: raw, weighted_combined, neighbors_1st, neighbors_2nd, smoothed_1st, smoothed_all</span></span>
 <span></span>
 <span><span class="co"># Example smoothing effectiveness analysis:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Smoothing effectiveness:\n"</span><span class="op">)</span></span>
@@ -951,7 +951,7 @@ performance and smoothing effectiveness for most applications.</p>
 <span>  var_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coastal_vegetation"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using C++ implementation for N-order smoothing</span></span>
-<span><span class="co">#&gt; C++ implementation failed, falling back to R implementation:  "_hexsmoothR_process_district_all_vars_n_orders" not available for .Call() for package "hexsmoothR"</span></span>
+<span><span class="co">#&gt; Processing hexagon 5000 of 11223Processing hexagon 10000 of 11223</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"3-Order spatial smoothing complete\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 3-Order spatial smoothing complete</span></span>
@@ -1095,7 +1095,7 @@ decay patterns for your analysis</li>
 <span>     col <span class="op">=</span> <span class="va">plot_colors</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">smoothing_results</span><span class="op">$</span><span class="va">coastal_vegetation</span><span class="op">$</span><span class="va">weighted_combined</span>, <span class="fl">100</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Final Weighted Combined Result"</span>,</span>
 <span>     border <span class="op">=</span> <span class="st">"white"</span>, lwd <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
-<p><img src="hexsmoothR-complete-guide_files/figure-html/visualize-results-1.png" width="960"></p>
+<p><img src="hexsmoothR-complete-guide_files/figure-html/visualize-results-1.png" class="r-plt" alt="" width="960"></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"All visualization plots created successfully!\n"</span><span class="op">)</span></span>
@@ -1308,7 +1308,7 @@ each cell has</li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

@@ -1,0 +1,132 @@
+# Create hexagonal or square grids for spatial analysis
+
+Creates regular hexagonal or square grids over a study area. The
+function automatically handles coordinate system transformations and
+ensures proper grid alignment.
+
+## Usage
+
+``` r
+create_grid(
+  study_area,
+  cell_size,
+  type = c("hexagonal", "square"),
+  projection_crs = 32636,
+  id_column = NULL,
+  return_crs = 4326,
+  check_size = TRUE,
+  max_cells = 1e+06
+)
+```
+
+## Arguments
+
+- study_area:
+
+  sf object containing polygonal geometries defining the study area. Can
+  be in any CRS - will be transformed to \`projection_crs\` for grid
+  creation.
+
+- cell_size:
+
+  Grid cell size. \*\*UNITS DEPEND ON CRS:\*\* - \*\*Projected CRS
+  (recommended)\*\*: size in METERS - For hexagons: flat-to-flat
+  distance (width between opposite edges) - For squares: side length -
+  \*\*Geographic CRS\*\*: size in DEGREES - Use with caution for large
+  areas due to distortion
+
+- type:
+
+  Character string: "hexagonal" (default) or "square"
+
+- projection_crs:
+
+  CRS for grid creation (default UTM 36N). Should be a projected
+  coordinate system for accurate measurements. Use
+  \`get_utm_crs(study_area)\` to automatically determine appropriate UTM
+  zone.
+
+- id_column:
+
+  Optional column name in \`study_area\` for creating separate grids for
+  each unique value. If provided, returns a named list of grids.
+
+- return_crs:
+
+  CRS for output grid (default WGS84). Grid will be transformed to this
+  CRS after creation.
+
+- check_size:
+
+  Whether to warn if grid will be very large (default TRUE)
+
+- max_cells:
+
+  Maximum number of cells allowed before stopping (default 1000000). Set
+  to NULL to disable this safety check entirely.
+
+## Value
+
+sf object containing the grid, or named list of sf objects if
+\`id_column\` is used. Each grid cell contains:
+
+- grid_id:
+
+  Unique identifier for each cell
+
+- grid_index:
+
+  Sequential index (1 to number of cells)
+
+- geometry:
+
+  Polygon geometry of the cell
+
+## Details
+
+\*\*CRITICAL: Cell Size Units\*\*
+
+The \`cell_size\` parameter units depend on the coordinate reference
+system (CRS):
+
+\- \*\*Projected CRS (UTM, State Plane, etc.)\*\*: \`cell_size\` in
+\*\*METERS\*\* - Example: \`cell_size = 20000\` creates 20km hexagons -
+Example: \`cell_size = 1000\` creates 1km hexagons
+
+\- \*\*Geographic CRS (WGS84, NAD83, etc.)\*\*: \`cell_size\` in
+\*\*DEGREES\*\* - Example: \`cell_size = 0.1\` creates ~11km hexagons -
+Example: \`cell_size = 0.01\` creates ~1.1km hexagons
+
+\*\*Recommended Practice:\*\* Always use projected CRS (UTM) for
+real-world analysis to ensure accurate area calculations and distance
+measurements.
+
+\*\*Hexagon Measurements:\*\* - \`cell_size\` represents the
+\*\*flat-to-flat distance\*\* (width between opposite edges) - Creates
+\*\*pointy-topped hexagons\*\* (flat sides horizontal) - This is the
+most intuitive measure as it represents the "width" of each hexagon -
+Use helper functions \`hex_flat_to_edge()\` etc. to convert between
+measurements
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(sf)
+
+# Create a simple study area
+study_area <- st_sf(geometry = st_sfc(
+  st_polygon(list(matrix(c(-5, 35, 5, 35, 5, 45, -5, 45, -5, 35), ncol = 2, byrow = TRUE))),
+  crs = 4326
+))
+
+# Create 1km hexagonal grid (flat-to-flat distance = 1000m)
+hex_grid <- create_grid(study_area, cell_size = 1000, type = "hexagonal")
+
+# Create 2km square grid (side length = 2000m)  
+square_grid <- create_grid(study_area, cell_size = 2000, type = "square")
+
+# Create high-resolution grid with custom safety limit
+high_res_grid <- create_grid(study_area, cell_size = 100, type = "hexagonal", max_cells = 2000000)
+} # }
+```
