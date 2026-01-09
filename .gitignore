@@ -14,9 +14,9 @@ src/*.dll
 src/*.dylib
 src/symbols.rds
 
-# Rcpp generated files
-src/RcppExports.cpp
-src/RcppExports.R
+# Rcpp generated files - NOTE: These should be committed to the repo!
+# src/RcppExports.cpp  # Keep this file in the repo
+# R/RcppExports.R      # Keep this file in the repo
 
 # Documentation build artifacts
 vignettes/*.html
