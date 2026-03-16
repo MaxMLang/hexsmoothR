@@ -6,6 +6,8 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/MaxMLang/hexsmoothR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MaxMLang/hexsmoothR/actions/workflows/R-CMD-check.yaml)
+[![DOI](https://zenodo.org/badge/1025846322.svg)](https://doi.org/10.5281/zenodo.19041606)
+
 <!-- badges: end -->
 
 [![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)](https://www.r-project.org/)
