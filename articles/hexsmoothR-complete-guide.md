@@ -790,12 +790,12 @@ smoothing_results <- smooth_variables(
   var_names = c("coastal_vegetation")
 )
 #> Using C++ implementation for N-order smoothing
-#> Processing hexagon 5000 of 11223Processing hexagon 10000 of 11223
+#> C++ implementation failed, falling back to R implementation:  "_hexsmoothR_process_district_all_vars_n_orders" not available for .Call() for package "hexsmoothR"
 
 cat("Spatial smoothing complete\n")
 #> Spatial smoothing complete
 cat("Results:", paste(names(smoothing_results$coastal_vegetation), collapse = ", "), "\n")
-#> Results: raw, weighted_combined, neighbors_1st, neighbors_2nd, smoothed_1st, smoothed_all
+#> Results: raw, weighted_combined, neighbors_1st, neighbors_2nd
 
 # Example smoothing effectiveness analysis:
 cat("Smoothing effectiveness:\n")
@@ -847,7 +847,7 @@ smoothing_results_3 <- smooth_variables(
   var_names = c("coastal_vegetation")
 )
 #> Using C++ implementation for N-order smoothing
-#> Processing hexagon 5000 of 11223Processing hexagon 10000 of 11223
+#> C++ implementation failed, falling back to R implementation:  "_hexsmoothR_process_district_all_vars_n_orders" not available for .Call() for package "hexsmoothR"
 
 cat("3-Order spatial smoothing complete\n")
 #> 3-Order spatial smoothing complete
