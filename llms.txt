@@ -257,7 +257,8 @@ MIT License - see LICENSE file for details.
   title={hexsmoothR: Hexagonal Grid Smoothing for Satellite Data},
   author={Max M. Lang},
   year={2025},
-  url={https://github.com/maxmlang/hexsmoothR}
+  url={https://github.com/maxmlang/hexsmoothR},
+  doi={10.5281/zenodo.19041607}
 }
 ```
 
