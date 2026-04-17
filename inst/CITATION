@@ -1,32 +1,39 @@
 citHeader("To cite the hexsmoothR package in publications use:")
 
+year <- sub("-.*", "", meta$Date)
+if (!length(year) || !nzchar(year)) year <- format(Sys.Date(), "%Y")
+note <- sprintf("R package version %s", meta$Version)
+
 bibentry(
-  bibtype = "Manual",
-  title = "hexsmoothR: Hexagonal Grid Smoothing for Satellite Data",
-  author = c(
-    person("Max M.", "Lang", 
-           email = "max.lang@stx.ox.ac.uk",
-           role = c("aut", "cre"))
-  ),
-  year = 2024,
-  note = "R package version 0.1.0",
-  textVersion = paste("Max M. Lang (2024). hexsmoothR: Hexagonal Grid Smoothing for Satellite Data.",
-                     "R package version 0.1.0.")
+  bibtype  = "Manual",
+  title    = "hexsmoothR: Hexagonal Grid Smoothing for Satellite Data",
+  author   = person("Max M.", "Lang",
+                    email = "max.lang@stx.ox.ac.uk",
+                    role  = c("aut", "cre")),
+  year     = year,
+  note     = note,
+  url      = "https://maxmlang.github.io/hexsmoothR/",
+  doi      = "10.5281/zenodo.19041606",
+  textVersion = paste0(
+    "Max M. Lang (", year, "). ",
+    "hexsmoothR: Hexagonal Grid Smoothing for Satellite Data. ",
+    note, ". ",
+    "doi:10.5281/zenodo.19041606. ",
+    "https://maxmlang.github.io/hexsmoothR/"
+  )
 )
 
-citHeader("To cite the sample data in publications use:")
-
 bibentry(
-  bibtype = "Article",
-  title = "Landsat 8 Collection 2 Tier 1 Surface Reflectance",
-  author = c(
-    person("USGS", "Earth Resources Observation and Science Center")
-  ),
-  year = 2021,
-  journal = "Google Earth Engine Data Catalog",
-  url = "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2",
-  textVersion = paste("USGS Earth Resources Observation and Science Center (2021).",
-                     "Landsat 8 Collection 2 Tier 1 Surface Reflectance.",
-                     "Google Earth Engine Data Catalog.",
-                     "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2")
-) 
+  bibtype  = "Misc",
+  title    = "Landsat 8 Collection 2 Tier 1 Surface Reflectance",
+  author   = person("USGS", "Earth Resources Observation and Science Center"),
+  year     = 2021,
+  howpublished = "Google Earth Engine Data Catalog",
+  url      = "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2",
+  textVersion = paste(
+    "USGS Earth Resources Observation and Science Center (2021).",
+    "Landsat 8 Collection 2 Tier 1 Surface Reflectance.",
+    "Google Earth Engine Data Catalog.",
+    "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2"
+  )
+)

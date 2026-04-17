@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_grid.R
 \name{create_single_grid}
 \alias{create_single_grid}
-\title{Actually make the grid for one area}
+\title{Build the grid for a single study area (internal)}
 \usage{
 create_single_grid(
   study_area,
@@ -16,6 +16,6 @@ create_single_grid(
 )
 }
 \description{
-Actually make the grid for one area
+Build the grid for a single study area (internal)
 }
 \keyword{internal}

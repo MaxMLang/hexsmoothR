@@ -1,17 +1,18 @@
 Package: hexsmoothR
 Type: Package
 Title: Hexagonal Grid Smoothing for Satellite Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person("Max M.", "Lang", email = "max.lang@stx.ox.ac.uk", role = c("aut", "cre"))
-Author: Max M. Lang [aut, cre]
-Maintainer: Max M. Lang <max.lang@stx.ox.ac.uk>
-Description: Creates hexagonal grids and applies spatial smoothing to satellite raster data. 
-    Provides tools for extracting environmental variables from TIF files and applying 
-    Gaussian-weighted spatial smoothing using C++ optimization. The package implements
-    a two-step workflow for spatial analysis: (1) extract raster data into hexagonal grids,
-    and (2) apply spatial smoothing with customizable neighborhood weights.
-License: file LICENSE
+Description: Creates hexagonal grids and applies spatial smoothing to satellite
+    raster data. Provides tools for extracting environmental variables from TIF
+    files and applying Gaussian-weighted spatial smoothing using 'Rcpp' for
+    performance. The workflow has two steps: (1) extract raster data into
+    hexagonal grids, and (2) apply N-order neighbour smoothing with
+    customisable weights.
+License: BSD_3_clause + file LICENSE
+URL: https://maxmlang.github.io/hexsmoothR/, https://github.com/MaxMLang/hexsmoothR
+BugReports: https://github.com/MaxMLang/hexsmoothR/issues
 Encoding: UTF-8
 Depends: R (>= 4.0.0)
 LinkingTo: Rcpp
@@ -26,8 +27,9 @@ Suggests:
     rmarkdown,
     Matrix,
     ggplot2,
-    gridExtra
+    gridExtra,
+    withr
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
-SystemRequirements: GDAL (>= 3.0), GEOS (>= 3.8), PROJ (>= 6.0)
-URL: https://maxmlang.github.io/hexsmoothR/
+SystemRequirements: GDAL (>= 3.0), GEOS (>= 3.8), PROJ (>= 6.0), C++17
+Config/testthat/edition: 3

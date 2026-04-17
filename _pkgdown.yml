@@ -1,4 +1,54 @@
 url: https://maxmlang.github.io/hexsmoothR/
+
 template:
   bootstrap: 5
+  bslib:
+    primary: "#2c3e50"
 
+home:
+  links:
+  - text: Browse source code
+    href: https://github.com/MaxMLang/hexsmoothR
+  - text: Report a bug
+    href: https://github.com/MaxMLang/hexsmoothR/issues
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+
+reference:
+- title: Grids
+  desc: Build and tune hexagonal / rectangular grids over a study area.
+  contents:
+  - create_grid
+  - create_single_grid
+  - find_hex_cell_size_for_target_cells
+  - get_utm_crs
+- title: Raster extraction
+  desc: Pull raster values into grid cells.
+  contents:
+  - extract_raster_data
+- title: Topology and smoothing
+  desc: Compute neighbour topology and apply N-order spatial smoothing.
+  contents:
+  - compute_topology
+  - smooth_variables
+- title: Hex measurement helpers
+  contents:
+  - starts_with("hex_")
+- title: Internal
+  contents:
+  - hex_msg
+  - ordinal_suffix
+  - validate_smoothing_inputs
+  - smooth_variables_r_fallback
+  - estimate_avg_neighbor_distance
+  - compute_neighbors_n_orders
+  - compute_weights_n_orders
+
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - hexsmoothR-complete-guide

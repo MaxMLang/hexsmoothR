@@ -16,38 +16,30 @@ hex_edge_to_flat(edge_length)
 hex_circumradius_to_flat(circumradius)
 }
 \arguments{
-\item{flat_to_flat}{Flat-to-flat distance (distance between opposite edges)}
+\item{flat_to_flat}{Flat-to-flat distance (between opposite edges).}
 
-\item{edge_length}{Edge length of the hexagon}
+\item{edge_length}{Edge length of the hexagon.}
 
-\item{circumradius}{Circumradius of the hexagon}
+\item{circumradius}{Circumradius (centre to vertex).}
 }
 \value{
-Numeric value in the same units as input
+Numeric value in the same units as the input.
 }
 \description{
-Helper functions to convert between different hexagon measurements:
-flat-to-flat distance, edge length, and circumradius (center to vertex).
+Helper functions to convert between different hexagon measurements.
+For a regular hexagon, the circumradius equals the edge length, so the
+"edge" and "circumradius" helpers are mathematically identical (provided
+for clarity at the call site).
 }
 \details{
-Convert between hexagon measurements
-
-These functions convert between different hexagon measurements:
-- `hex_flat_to_edge`: Convert flat-to-flat distance to edge length
-- `hex_flat_to_circumradius`: Convert flat-to-flat distance to circumradius
-- `hex_edge_to_flat`: Convert edge length to flat-to-flat distance  
-- `hex_circumradius_to_flat`: Convert circumradius to flat-to-flat distance
+- `hex_flat_to_edge()`: flat-to-flat distance to edge length
+- `hex_flat_to_circumradius()`: flat-to-flat distance to circumradius
+- `hex_edge_to_flat()`: edge length to flat-to-flat distance
+- `hex_circumradius_to_flat()`: circumradius to flat-to-flat distance
 }
 \examples{
-# Convert 1000m flat-to-flat to edge length
-hex_flat_to_edge(1000)  # Returns ~577.35m
-
-# Convert 1000m flat-to-flat to circumradius  
-hex_flat_to_circumradius(1000)  # Returns ~577.35m
-
-# Convert 577.35m edge length to flat-to-flat
-hex_edge_to_flat(577.35)  # Returns ~1000m
-
-# Convert 577.35m circumradius to flat-to-flat
-hex_circumradius_to_flat(577.35)  # Returns ~1000m
+hex_flat_to_edge(1000)          # ~577.35
+hex_flat_to_circumradius(1000)  # ~577.35
+hex_edge_to_flat(577.35)        # ~1000
+hex_circumradius_to_flat(577.35)# ~1000
 }

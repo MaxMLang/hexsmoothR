@@ -2,7 +2,7 @@
 % Please edit documentation in R/cpp_wrapper.R
 \name{smooth_variables_r_fallback}
 \alias{smooth_variables_r_fallback}
-\title{R fallback smoothing function (internal)}
+\title{R fallback for N-order spatial smoothing}
 \usage{
 smooth_variables_r_fallback(
   variable_values,
@@ -12,7 +12,27 @@ smooth_variables_r_fallback(
   var_names
 )
 }
+\arguments{
+\item{variable_values}{List of numeric vectors (one per variable).}
+
+\item{neighbors}{List of length `n_orders`; each element is a list of
+length `n_cells` of integer neighbour indices.}
+
+\item{weights}{List with `center_weight` and `neighbor_weights`.}
+
+\item{hex_indices}{Integer vector of cell indices (1-based) to process.}
+
+\item{var_names}{Character vector of variable names.}
+}
+\value{
+Named list with one entry per variable, each containing
+  `raw` (the centre cell value), `weighted_combined` (the smoothed value),
+  and `neighbors_<N><suffix>` (per-order neighbour means, e.g.
+  `neighbors_1st`, `neighbors_2nd`, ...).
+}
 \description{
-R fallback smoothing function (internal)
+Pure-R implementation matching the C++ algorithm in
+`process_district_all_vars_n_orders()`. Used automatically by
+[`smooth_variables()`] when the compiled library is unavailable.
 }
 \keyword{internal}

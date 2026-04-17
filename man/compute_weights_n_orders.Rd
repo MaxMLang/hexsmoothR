@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_topology.R
 \name{compute_weights_n_orders}
 \alias{compute_weights_n_orders}
-\title{Compute weights for N orders (internal function)}
+\title{Compute weights for N orders (internal)}
 \usage{
 compute_weights_n_orders(
   neighbor_orders,
@@ -14,6 +14,6 @@ compute_weights_n_orders(
 )
 }
 \description{
-Compute weights for N orders (internal function)
+Compute weights for N orders (internal)
 }
 \keyword{internal}

@@ -43,11 +43,18 @@ A comprehensive R package for creating hexagonal grids and applying spatial smoo
 ### Install hexsmoothR
 
 ```r
-# Install from GitHub
-devtools::install_github("MaxMLang/hexsmoothR")
+# From R-universe (recommended; pre-built binaries on Win/macOS):
+install.packages(
+  "hexsmoothR",
+  repos = c("https://maxmlang.r-universe.dev", "https://cloud.r-project.org")
+)
 
-# Or install from local source
-install.packages("hexsmoothR_0.1.0.tar.gz", repos = NULL, type = "source")
+# From GitHub (compiles from source):
+# install.packages("remotes")
+remotes::install_github("MaxMLang/hexsmoothR")
+
+# From a local source tarball:
+install.packages("hexsmoothR_0.2.0.tar.gz", repos = NULL, type = "source")
 ```
 
 ### Troubleshooting

@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_raster_data.R
 \name{extract_raster_data}
 \alias{extract_raster_data}
-\title{Extract raster data for a hex grid using exactextractr}
+\title{Extract raster data into a hexagonal grid}
 \usage{
 extract_raster_data(
   raster_files,
@@ -10,101 +10,59 @@ extract_raster_data(
   cell_size = NULL,
   hex_grid = NULL,
   sample_fraction = 1,
-  random_seed = 42
+  random_seed = 42,
+  fun = "mean"
 )
 }
 \arguments{
-\item{raster_files}{named vector of raster file paths OR named list of terra::rast objects}
+\item{raster_files}{Named character vector of file paths OR named list of
+`terra::SpatRaster` objects.}
 
-\item{study_area}{sf polygon (optional, for cropping and grid CRS reference)}
+\item{study_area}{Optional sf polygon used for cropping each raster and to
+define the grid CRS.}
 
-\item{cell_size}{hex cell size (in units of the target CRS - see details)}
+\item{cell_size}{Hex cell size, in the units of the grid CRS. Required when
+`hex_grid` is not supplied.}
 
-\item{hex_grid}{optional sf hexagonal grid to use instead of creating a new one}
+\item{hex_grid}{Optional sf hexagonal grid to use instead of creating one.}
 
-\item{sample_fraction}{fraction of raster cells to use (default 1)}
+\item{sample_fraction}{Fraction of grid cells to keep (default 1).}
 
-\item{random_seed}{for reproducibility}
+\item{random_seed}{Seed for reproducible sampling.}
+
+\item{fun}{Aggregation function passed to `exactextractr::exact_extract()`
+(default `"mean"`).}
 }
 \value{
-list: data frame with cell_id, x, y, and values for each raster
+List with components
+  \describe{
+    \item{`data`}{Data frame with `cell_id`, `x`, `y` and one column per raster.}
+    \item{`hex_grid`}{The sf grid that was used (sampled, if applicable).}
+    \item{`cell_size`}{The cell size used.}
+    \item{`extent`}{Extent of the first raster (after cropping).}
+    \item{`variables`}{Names of the rasters.}
+    \item{`n_cells`}{Number of cells in `data`.}
+  }
 }
 \description{
-This is the PRIMARY function for extracting raster data to hexagonal grids.
-It automatically handles CRS transformations and creates consistent hexagonal grids.
+Primary function for extracting raster values into hexagonal grid cells. CRS
+transformations are handled automatically: each raster is reprojected (or the
+grid is reprojected to the raster's CRS) so that the underlying call to
+[`exactextractr::exact_extract()`] always sees matching CRSs.
 }
-\details{
-**CRS Handling:**
-- If `study_area` is provided, the function creates a grid in the study area's CRS
-- If no `study_area` is provided, the function creates a grid in the raster's CRS
-- The function automatically crops rasters to the study area (if provided)
-- All coordinate transformations are handled transparently
+\section{Input flexibility}{
 
-**Grid Creation:**
-- Creates hexagonal grids using `sf::st_make_grid` for robustness
-- Automatically adjusts cell sizes for geographic coordinates (degrees)
-- Can use a pre-existing grid via the `hex_grid` parameter
-
-**Input Flexibility:**
-- Accepts both file paths (character strings) and `terra::rast` objects
-- When passing `terra::rast` objects, you can inspect CRS, dimensions, and data before extraction
-- Useful for working with in-memory rasters or pre-processed data
-
-
-**CRS Handling Details:**
-
-The function intelligently handles coordinate reference systems:
-
-1. **Study Area Provided**: Grid is created in the study area's CRS
-   - Example: If study_area is in UTM (EPSG:32630), grid uses UTM coordinates
-   - Cell sizes should be in meters (e.g., 20000 for 20km hexagons)
-
-2. **No Study Area**: Grid is created in the raster's CRS
-   - Example: If raster is in WGS84 (EPSG:4326), grid uses geographic coordinates
-   - Cell sizes should be in degrees (e.g., 0.1 for ~11km hexagons)
-
-3. **Automatic Adjustments**: 
-   - Large cell sizes (>1) in geographic coordinates trigger warnings
-   - Cell sizes are automatically adjusted for geographic coordinates if needed
-
-**Input Types:**
-
-The function accepts two types of input for `raster_files`:
-
-1. **File Paths**: Named character vector of file paths
-   ```r
-   raster_files = c(ndvi = "path/to/ndvi.tif", elevation = "path/to/elevation.tif")
-   ```
-
-2. **Terra Raster Objects**: Named list of terra::rast objects
-   ```r
-   # Load rasters first to inspect them
-   ndvi_rast <- rast("path/to/ndvi.tif")
-   elev_rast <- rast("path/to/elevation.tif")
-   
-   # Check CRS, dimensions, etc.
-   print(crs(ndvi_rast))
-   print(dim(ndvi_rast))
-   
-   # Pass to function
-   raster_files = list(ndvi = ndvi_rast, elevation = elev_rast)
-   ```
-
-**Workflow Recommendation:**
-
-For consistent results, always provide a `study_area` in your desired CRS:
-```r
-# Create study area in UTM for accurate measurements
-study_area_utm <- st_transform(study_area_wgs, utm_crs)
-
-# Extract with 20km hexagons (in UTM coordinates)
-extracted <- extract_raster_data(
-  raster_files = c(var1 = "path/to/raster.tif"),
-  study_area = study_area_utm,
-  cell_size = 20000  # 20km in meters
-)
-
-# Then apply smoothing
-smoothed <- smooth_variables(...)
-```
+`raster_files` may be either a named character vector of file paths or a
+named list of `terra::SpatRaster` objects. All inputs may be in different
+CRSs from one another and from the grid - the function handles cropping and
+transformation per raster.
 }
+
+\section{CRS handling}{
+
+- If `study_area` is supplied, the grid is created in the study area's CRS.
+- Otherwise the grid is created in the first raster's CRS.
+- For each raster, the grid is transformed to the raster's CRS before
+  extraction (so cell-size units are honoured exactly once, in the grid CRS).
+}
+

@@ -74,6 +74,7 @@ output/
 # Package build artifacts
 /doc/
 /Meta/
+/inst/doc/
 /hexsmoothR.Rcheck/
 /hexsmoothR_*.tar.gz
 

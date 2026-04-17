@@ -2,11 +2,11 @@
 % Please edit documentation in R/compute_topology.R
 \name{compute_neighbors_n_orders}
 \alias{compute_neighbors_n_orders}
-\title{Compute neighbors for N orders (internal function)}
+\title{Compute neighbours for N orders (internal, vectorised set-based BFS)}
 \usage{
 compute_neighbors_n_orders(grid_proj, neighbor_orders)
 }
 \description{
-Compute neighbors for N orders (internal function)
+Compute neighbours for N orders (internal, vectorised set-based BFS)
 }
 \keyword{internal}
