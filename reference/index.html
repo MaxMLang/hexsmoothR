@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hexsmoothR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,10 +18,12 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/hexsmoothR-complete-guide.html">hexsmoothR: Complete Guide to Hexagonal Grid Smoothing</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/hexsmoothR-complete-guide.html">Getting started with hexsmoothR</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/MaxMLang/hexsmoothR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -33,9 +35,62 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="grids">Grids<a class="anchor" aria-label="anchor" href="#grids"></a></h2>
+
+      <div class="section-desc"><p>Build and tune hexagonal / rectangular grids over a study area.</p></div>
+
+      <dl></dl></div><div class="section level2">
 
 
+
+
+      <dl><dt>
+
+          <code><a href="create_grid.html">create_grid()</a></code>
+
+        </dt>
+        <dd>Create hexagonal or square grids for spatial analysis</dd>
+
+        <dt>
+
+          <code><a href="create_single_grid.html">create_single_grid()</a></code>
+
+        </dt>
+        <dd>Build the grid for a single study area (internal)</dd>
+
+        <dt>
+
+          <code><a href="find_hex_cell_size_for_target_cells.html">find_hex_cell_size_for_target_cells()</a></code>
+
+        </dt>
+        <dd>Find a hexagonal cell size that yields approximately a target number of cells</dd>
+
+        <dt>
+
+          <code><a href="get_utm_crs.html">get_utm_crs()</a></code>
+
+        </dt>
+        <dd>Get an appropriate UTM CRS for a study area</dd>
+      </dl></div><div class="section level2">
+      <h2 id="raster-extraction">Raster extraction<a class="anchor" aria-label="anchor" href="#raster-extraction"></a></h2>
+
+      <div class="section-desc"><p>Pull raster values into grid cells.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="extract_raster_data.html">extract_raster_data()</a></code>
+
+        </dt>
+        <dd>Extract raster data into a hexagonal grid</dd>
+      </dl></div><div class="section level2">
+      <h2 id="topology-and-smoothing">Topology and smoothing<a class="anchor" aria-label="anchor" href="#topology-and-smoothing"></a></h2>
+
+      <div class="section-desc"><p>Compute neighbour topology and apply N-order spatial smoothing.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -51,47 +106,87 @@
 
         <dt>
 
-          <code><a href="create_grid.html">create_grid()</a></code>
+          <code><a href="smooth_variables.html">smooth_variables()</a></code>
 
         </dt>
-        <dd>Create hexagonal or square grids for spatial analysis</dd>
+        <dd>Apply spatial smoothing to variables on a hexagonal grid</dd>
+      </dl></div><div class="section level2">
+      <h2 id="hex-measurement-helpers">Hex measurement helpers<a class="anchor" aria-label="anchor" href="#hex-measurement-helpers"></a></h2>
 
-        <dt>
 
-          <code><a href="extract_raster_data.html">extract_raster_data()</a></code>
 
-        </dt>
-        <dd>Extract raster data for a hex grid using exactextractr</dd>
+      <dl></dl></div><div class="section level2">
 
-        <dt>
 
-          <code><a href="find_hex_cell_size_for_target_cells.html">find_hex_cell_size_for_target_cells()</a></code>
 
-        </dt>
-        <dd>Find optimal hexagonal cell size for target number of cells</dd>
 
-        <dt>
-
-          <code><a href="get_utm_crs.html">get_utm_crs()</a></code>
-
-        </dt>
-        <dd>Get appropriate UTM CRS for a study area</dd>
-
-        <dt>
+      <dl><dt>
 
           <code><a href="hex_flat_to_edge.html">hex_flat_to_edge()</a></code> <code><a href="hex_flat_to_edge.html">hex_flat_to_circumradius()</a></code> <code><a href="hex_flat_to_edge.html">hex_edge_to_flat()</a></code> <code><a href="hex_flat_to_edge.html">hex_circumradius_to_flat()</a></code>
 
         </dt>
         <dd>Convert between hexagon measurements</dd>
+      </dl></div><div class="section level2">
+      <h2 id="internal">Internal<a class="anchor" aria-label="anchor" href="#internal"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="hex_msg.html">hex_msg()</a></code>
+
+        </dt>
+        <dd>Internal verbose-print helper</dd>
 
         <dt>
 
-          <code><a href="smooth_variables.html">smooth_variables()</a></code>
+          <code><a href="ordinal_suffix.html">ordinal_suffix()</a></code>
 
         </dt>
-        <dd>Apply spatial smoothing to variables using hexagonal grid topology</dd>
+        <dd>Ordinal suffix for an integer (internal)</dd>
+
+        <dt>
+
+          <code><a href="validate_smoothing_inputs.html">validate_smoothing_inputs()</a></code>
+
+        </dt>
+        <dd>Validate inputs to the smoothing functions (internal)</dd>
+
+        <dt>
+
+          <code><a href="smooth_variables_r_fallback.html">smooth_variables_r_fallback()</a></code>
+
+        </dt>
+        <dd>R fallback for N-order spatial smoothing</dd>
+
+        <dt>
+
+          <code><a href="estimate_avg_neighbor_distance.html">estimate_avg_neighbor_distance()</a></code>
+
+        </dt>
+        <dd>Estimate average distance between first-order neighbours (internal)</dd>
+
+        <dt>
+
+          <code><a href="compute_neighbors_n_orders.html">compute_neighbors_n_orders()</a></code>
+
+        </dt>
+        <dd>Compute neighbours for N orders (internal, vectorised set-based BFS)</dd>
+
+        <dt>
+
+          <code><a href="compute_weights_n_orders.html">compute_weights_n_orders()</a></code>
+
+        </dt>
+        <dd>Compute weights for N orders (internal)</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

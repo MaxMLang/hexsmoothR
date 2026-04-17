@@ -1,7 +1,7 @@
-# Get appropriate UTM CRS for a study area
+# Get an appropriate UTM CRS for a study area
 
-Automatically determines the appropriate UTM coordinate reference system
-(CRS) for a given study area based on its centroid location.
+Determines the appropriate UTM coordinate reference system (CRS) for a
+given study area based on the longitude/latitude of its centroid.
 
 ## Usage
 
@@ -13,26 +13,24 @@ get_utm_crs(study_area)
 
 - study_area:
 
-  sf object representing the study area
+  sf object representing the study area. May be in any CRS; it will be
+  transformed to WGS84 (EPSG:4326) internally for the centroid
+  calculation.
 
 ## Value
 
-Character string with the UTM CRS (e.g., "EPSG:32630" for UTM zone 30N)
+Character string with the UTM CRS, e.g. \`"EPSG:32630"\` for UTM 30N.
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
 library(sf)
-
-# Create a simple study area
 study_area <- st_sf(geometry = st_sfc(
-  st_polygon(list(matrix(c(-5, 35, 5, 35, 5, 45, -5, 45, -5, 35), ncol = 2, byrow = TRUE))),
+  st_polygon(list(matrix(c(-5, 35, 5, 35, 5, 45, -5, 45, -5, 35),
+                         ncol = 2, byrow = TRUE))),
   crs = 4326
 ))
-
-# Get appropriate UTM CRS
-utm_crs <- get_utm_crs(study_area)
-print(utm_crs)  # Should return something like "EPSG:32630"
+get_utm_crs(study_area)  # "EPSG:32630"
 } # }
 ```

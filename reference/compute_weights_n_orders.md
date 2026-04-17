@@ -1,6 +1,6 @@
-# Compute weights for N orders (internal function)
+# Compute weights for N orders (internal)
 
-Compute weights for N orders (internal function)
+Compute weights for N orders (internal)
 
 ## Usage
 

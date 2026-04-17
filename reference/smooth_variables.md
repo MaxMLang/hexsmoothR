@@ -1,9 +1,9 @@
-# Apply spatial smoothing to variables using hexagonal grid topology
+# Apply spatial smoothing to variables on a hexagonal grid
 
-This function applies spatial smoothing to variables using a hexagonal
-grid topology. It can be used independently after data extraction, or as
-part of the complete workflow. The function automatically uses the C++
-implementation when available and falls back to R if needed.
+Smooths variables using the topology produced by
+\[\`compute_topology()\`\]. Uses the compiled C++ implementation when
+available; if the C++ call fails for an unexpected reason, falls back to
+the pure-R implementation and re-raises clear validation errors.
 
 ## Usage
 
@@ -13,7 +13,7 @@ smooth_variables(
   neighbors,
   weights,
   hex_indices = NULL,
-  var_names
+  var_names = NULL
 )
 ```
 
@@ -21,53 +21,34 @@ smooth_variables(
 
 - variable_values:
 
-  List of numeric vectors containing variable values for each grid cell
+  Named list of numeric vectors (one per variable).
 
 - neighbors:
 
-  List of neighbor indices for each order (from compute_topology)
+  List of neighbour lists (per order). Either the \`neighbors\` element
+  of a topology, or the topology object itself.
 
 - weights:
 
-  List containing center_weight and neighbor_weights for each order
+  List with \`center_weight\` and \`neighbor_weights\`. Either the
+  \`weights\` element of a topology, or the topology object itself.
 
 - hex_indices:
 
-  Vector of hexagon indices to process (default: all cells)
+  Integer vector of cell indices to process. Defaults to all cells.
 
 - var_names:
 
-  Character vector of variable names
+  Character vector of variable names. Defaults to
+  \`names(variable_values)\`.
 
 ## Value
 
-List containing smoothing results for each variable with the following
-components:
+Named list with one entry per variable. Each entry contains:
 
-- raw: Weighted average of center cell and all neighbors
+- \`raw\`: the original (unsmoothed) centre-cell values
 
-- neighbors_Nst: Mean of neighbors at order N
+- \`weighted_combined\`: weighted average of centre + all neighbours
 
-- weighted_combined: Weighted average of center cell and all neighbors
-
-## Examples
-
-``` r
-# After creating a grid and computing topology
-# grid_sf <- create_grid(study_area, cell_size = 10000)
-# topology <- compute_topology(grid_sf, neighbor_orders = 3)  # 3 orders
-
-# Extract your variables (example)
-# variable_values <- list(
-#   ndvi = c(0.5, 0.6, 0.4, 0.7, 0.3),
-#   elevation = c(100, 120, 90, 140, 80)
-# )
-
-# Apply smoothing with N orders
-# smoothing_results <- smooth_variables(
-#   variable_values = variable_values,
-#   neighbors = topology$neighbors,
-#   weights = topology$weights,
-#   var_names = c("ndvi", "elevation")
-# )
-```
+- \`neighbors\_\<N\>\<suffix\>\`: mean of neighbours at order N (e.g.
+  \`neighbors_1st\`, \`neighbors_2nd\`, \`neighbors_3rd\`)

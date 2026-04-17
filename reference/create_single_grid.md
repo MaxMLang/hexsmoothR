@@ -1,6 +1,6 @@
-# Actually make the grid for one area
+# Build the grid for a single study area (internal)
 
-Actually make the grid for one area
+Build the grid for a single study area (internal)
 
 ## Usage
 

@@ -1,7 +1,8 @@
-# Find optimal hexagonal cell size for target number of cells
+# Find a hexagonal cell size that yields approximately a target number of cells
 
-Uses binary search to find the hexagonal cell size (flat-to-flat
-distance) that produces approximately the target number of hexagons.
+Uses a binary search over \`cell_size_min\` / \`cell_size_max\` to find
+the flat-to-flat distance that produces approximately \`target_cells\`
+hexagons.
 
 ## Usage
 
@@ -9,10 +10,11 @@ distance) that produces approximately the target number of hexagons.
 find_hex_cell_size_for_target_cells(
   study_area,
   target_cells,
-  cell_size_min = 0.001,
-  cell_size_max = 10,
+  cell_size_min = NULL,
+  cell_size_max = NULL,
   tol = 0.05,
-  max_iter = 20
+  max_iter = 20,
+  projection_crs = NULL
 )
 ```
 
@@ -20,29 +22,34 @@ find_hex_cell_size_for_target_cells(
 
 - study_area:
 
-  sf object (polygons)
+  sf object (polygons).
 
 - target_cells:
 
-  target number of hexagons
+  Desired number of hexagons (positive integer).
 
 - cell_size_min:
 
-  minimum cell size to try (in map units)
+  Minimum cell size to try. Default \`NULL\`, in which case the search
+  range is derived from the bounding box of \`study_area\` so it works
+  for either projected (metres) or geographic (degrees) input.
 
 - cell_size_max:
 
-  maximum cell size to try (in map units)
+  Maximum cell size to try. See \`cell_size_min\`.
 
 - tol:
 
-  tolerance for convergence (fraction of target_cells)
+  Convergence tolerance (fraction of \`target_cells\`).
 
 - max_iter:
 
-  maximum iterations for binary search
+  Maximum binary-search iterations.
+
+- projection_crs:
+
+  Optional CRS for grid construction (passed to \[\`create_grid()\`\]).
 
 ## Value
 
-cell size (flat-to-flat distance) that gives closest to target_cells
-hexagons
+Cell size (flat-to-flat distance) closest to \`target_cells\`.

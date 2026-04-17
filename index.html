@@ -16,8 +16,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Hexagonal Grid Smoothing for Satellite Data">
-<meta name="description" content="Creates hexagonal grids and applies spatial smoothing to satellite raster data. Provides tools for extracting environmental variables from TIF files and applying Gaussian-weighted spatial smoothing using C++ optimization. The package implements a two-step workflow for spatial analysis: (1) extract raster data into hexagonal grids, and (2) apply spatial smoothing with customizable neighborhood weights.">
-<meta property="og:description" content="Creates hexagonal grids and applies spatial smoothing to satellite raster data. Provides tools for extracting environmental variables from TIF files and applying Gaussian-weighted spatial smoothing using C++ optimization. The package implements a two-step workflow for spatial analysis: (1) extract raster data into hexagonal grids, and (2) apply spatial smoothing with customizable neighborhood weights.">
+<meta name="description" content="Creates hexagonal grids and applies spatial smoothing to satellite raster data. Provides tools for extracting environmental variables from TIF files and applying Gaussian-weighted spatial smoothing using Rcpp for performance. The workflow has two steps: (1) extract raster data into hexagonal grids, and (2) apply N-order neighbour smoothing with customisable weights.">
+<meta property="og:description" content="Creates hexagonal grids and applies spatial smoothing to satellite raster data. Provides tools for extracting environmental variables from TIF files and applying Gaussian-weighted spatial smoothing using Rcpp for performance. The workflow has two steps: (1) extract raster data into hexagonal grids, and (2) apply N-order neighbour smoothing with customisable weights.">
 <meta property="og:image" content="https://maxmlang.github.io/hexsmoothR/logo.png">
 </head>
 <body>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">hexsmoothR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,14 +41,16 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/hexsmoothR-complete-guide.html">hexsmoothR: Complete Guide to Hexagonal Grid Smoothing</a></li>
+<li><a class="dropdown-item" href="articles/hexsmoothR-complete-guide.html">Getting started with hexsmoothR</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/MaxMLang/hexsmoothR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -96,11 +98,18 @@
 <h3 id="install-hexsmoothr">Install hexsmoothR<a class="anchor" aria-label="anchor" href="#install-hexsmoothr"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install from GitHub</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"MaxMLang/hexsmoothR"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># From R-universe (recommended; pre-built binaries on Win/macOS):</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>  <span class="st">"hexsmoothR"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://maxmlang.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Or install from local source</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hexsmoothR_0.1.0.tar.gz"</span>, repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># From GitHub (compiles from source):</span></span>
+<span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"MaxMLang/hexsmoothR"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># From a local source tarball:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hexsmoothR_0.2.0.tar.gz"</span>, repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
@@ -337,11 +346,21 @@
 <p>For issues and questions: - Check the vignettes: <code><a href="articles/hexsmoothR-complete-guide.html">vignette("hexsmoothR-complete-guide", package = "hexsmoothR")</a></code> - Run examples: <code>example(create_grid)</code> - Report bugs on GitHub</p>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/MaxMLang/hexsmoothR/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/MaxMLang/hexsmoothR/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/MaxMLang/hexsmoothR" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/MaxMLang/hexsmoothR/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/BSD-3-Clause" class="external-link">BSD_3_clause</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 

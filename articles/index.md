@@ -1,6 +1,6 @@
 # Articles
 
-### All vignettes
+### Get started
 
-- [hexsmoothR: Complete Guide to Hexagonal Grid
-  Smoothing](https://maxmlang.github.io/hexsmoothR/articles/hexsmoothR-complete-guide.md):
+- [Getting started with
+  hexsmoothR](https://maxmlang.github.io/hexsmoothR/articles/hexsmoothR-complete-guide.md):

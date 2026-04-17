@@ -1,6 +1,6 @@
-# Compute neighbors for N orders (internal function)
+# Compute neighbours for N orders (internal, vectorised set-based BFS)
 
-Compute neighbors for N orders (internal function)
+Compute neighbours for N orders (internal, vectorised set-based BFS)
 
 ## Usage
 
